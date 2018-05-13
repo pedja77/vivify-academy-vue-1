@@ -8,7 +8,7 @@
       v-for="(contact, key) in contacts"
       :key="key"
     >
-      {{ contact.name }}
+      {{ contact.first_name }} {{ contact.last_name }}
     </router-link>
   </div>
 </template>

@@ -14,6 +14,7 @@
 <script>
 import ContactList from '../components/ContactList.vue'
 import ContactDetails from '../components/ContactDetails.vue'
+import { contacts } from '../services/Contacts'
 
 export default {
   components: {
@@ -25,6 +26,15 @@ export default {
     return {
       contacts: []
     }
+  },
+
+  beforeRouteEnter (to, from, next) {
+    contacts.getAll()
+      .then((response) => {
+          next((vm) => {
+            vm.contacts = response.data
+          })
+      })
   },
 
   computed: {
