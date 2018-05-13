@@ -5,7 +5,7 @@
         <ContactList :contacts="contacts" />
       </div>
       <div class="col-8">
-        <ContactDetails :contact="routeContact" />
+        <ContactDetails :contact="routeContact" @contactDeleted="deleteContact" />
       </div>
     </div>
   </div>
@@ -35,6 +35,13 @@ export default {
             vm.contacts = response.data
           })
       })
+  },
+
+  methods: {
+    deleteContact (id) {
+      let index = this.contacts.findIndex(contact => contact.id === id)
+      this.contacts.splice(index, 1)
+    }
   },
 
   computed: {
