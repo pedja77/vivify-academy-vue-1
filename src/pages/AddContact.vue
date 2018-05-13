@@ -55,9 +55,25 @@ export default {
     }
   },
 
+  created () {
+    if (this.$route.params.id) {
+      contacts.get(this.$route.params.id)
+        .then((response) => {
+          this.contact = response.data
+        })
+    }
+  },
+
   methods: {
     onSubmit () {
-      this.addContact()
+      this.$route.params.id ? this.editContact() : this.addContact()
+    },
+
+    editContact () {
+      contacts.edit(this.contact)
+        .then((response) => {
+          this.$router.push('/contacts')
+        })
     },
 
     addContact () {

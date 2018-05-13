@@ -7,6 +7,9 @@
         <li class="list-group-item"><i class="fas fa-phone fa-fw"></i> {{ contact.number }}</li>
         <li class="list-group-item">
           <button class="btn btn-danger btn-sm mr-2" @click="deleteContact(contact.id)"><i class="fas fa-trash"></i></button>
+          <router-link :to="{ name: 'add-contact', params: { id: contact.id } }">
+            <button class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></button>
+          </router-link>
         </li>
       </ul>
       <div class="card-body" v-else>
