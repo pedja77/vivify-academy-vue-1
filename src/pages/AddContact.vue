@@ -5,7 +5,14 @@
         <label for="first_name" class="col-4 col-form-label">First Name</label>
         <div class="col-8">
           <div class="input-group">
-            <input id="first_name" name="first_name" type="text" required="required" class="form-control here" v-model="contact.first_name">
+            <input
+              id="first_name"
+              name="first_name"
+              type="text"
+              required="required"
+              class="form-control here"
+              v-model="contact.first_name"
+              v-focus-on>
           </div>
         </div>
       </div>
@@ -71,14 +78,14 @@ export default {
 
     editContact () {
       contacts.edit(this.contact)
-        .then((response) => {
+        .then(() => {
           this.$router.push('/contacts')
         })
     },
 
     addContact () {
       contacts.add(this.contact)
-        .then((response) => {
+        .then(() => {
           this.$router.push('/contacts')
         })
     }
