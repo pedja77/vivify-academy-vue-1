@@ -1,3 +1,5 @@
+import validator from 'validator'
+
 const RULES = {
   REQUIRED: 'required',
   NUMBER: 'number',
@@ -5,14 +7,20 @@ const RULES = {
 }
 const MESSAGES_CLASSNAME = 'validator-messages'
 
-const removeMessageErrorElement = (element) => {
-  // remove old message element
-  let oldMessageElement =
-  element.querySelector(`#${MESSAGES_CLASSNAME}`)
+const removeMessageErrorElements = (element) => {
+  let oldMessageElements =
+    element.querySelectorAll(`#${MESSAGES_CLASSNAME}`)
 
-  if (oldMessageElement) {
+  oldMessageElements.forEach((oldMessageElement) => {
     oldMessageElement.remove()
-  }
+  })
+}
+
+const showMessageErrorElement = (element, message) => {
+  let messageElement = document.createElement('div')
+  messageElement.id = MESSAGES_CLASSNAME
+  messageElement.innerHTML = message
+  element.appendChild(messageElement)
 }
 
 const MyDirectives = {
@@ -25,9 +33,11 @@ const MyDirectives = {
 
     Vue.directive('validate', {
       inserted: function(element, binding) {
-        let validationRules = binding.value
+        let validationConfig = binding.value
+        let validationRules = validationConfig.validationRules
 
         element.addEventListener('submit', (event) => {
+          let errorCounter = 0
           event.preventDefault()
           Object.keys(validationRules).forEach(key => {
             let input = element.querySelector(`#${key}`)
@@ -37,22 +47,37 @@ const MyDirectives = {
               )
             }
 
+            // remove old message element
+            removeMessageErrorElements(element)
+
+            if (
+              validationRules[key].indexOf(RULES.EMAIL) > -1 &&
+              !validator.isEmail(input.value)
+            ) {
+              errorCounter++
+              showMessageErrorElement(
+                element,
+                `This field must be email`
+              )
+            }
+
             if (
               validationRules[key].indexOf(RULES.REQUIRED) > -1 &&
               !input.value.length
             ) {
-              let messageElement = document.createElement('div')
-              messageElement.id = MESSAGES_CLASSNAME
-
-              // remove old message element
-              removeMessageErrorElement(element)
-
-              messageElement.innerHTML = `${key.toUpperCase()} field is required`
-              element.appendChild(messageElement)
-            } else {
-              removeMessageErrorElement(element)
+              errorCounter++
+              showMessageErrorElement(
+                element,
+                `${key.toUpperCase()} field is required`
+              )
             }
+
+
           });
+
+          if (errorCounter === 0) {
+            validationConfig.submitCallback()
+          }
         })
       }
     })
