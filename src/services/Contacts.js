@@ -1,27 +1,27 @@
-import axios from 'axios'
+import axios from "axios"
 
 export default class Contacts {
-  constructor () {
-    axios.defaults.baseURL = 'http://localhost:3000/api/'
+  constructor() {
+    axios.defaults.baseURL = "http://localhost:8001/api/"
   }
 
-  getAll () {
-    return axios.get('contacts')
+  getAll() {
+    return axios.get("contacts")
   }
 
-  add (contact) {
-    return axios.post('contacts', contact)
+  add(contact) {
+    return axios.post("contacts", contact)
   }
 
-  remove (id) {
+  remove(id) {
     return axios.delete(`contacts/${id}`)
   }
 
-  edit (contact) {
+  edit(contact) {
     return axios.put(`contacts/${contact.id}`, contact)
   }
 
-  get (id) {
+  get(id) {
     return axios.get(`contacts/${id}`)
   }
 }
