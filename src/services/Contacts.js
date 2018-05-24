@@ -2,7 +2,7 @@ import axios from "axios"
 
 export default class Contacts {
   constructor() {
-    axios.defaults.baseURL = "http://localhost:8001/api/"
+    axios.defaults.baseURL = "http://localhost:8000/api/"
   }
 
   getAll() {
